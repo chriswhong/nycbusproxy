@@ -6,14 +6,15 @@ var app = express();
 //B52 Bus working api call
 //http://api.prod.obanyc.com/api/siri/vehicle-monitoring.json?&LineRef=MTA%20NYCT_B52&key=adf3b381-85b5-48b9-a049-32c335108f6e
 
-//empty geojson featureCollection
-var featureCollection = {
-  type: 'FeatureCollection',
-  features: []
-}
-
 //create a route for a get request to /api/b52
 app.get('/api/:route', function(req, res) {
+
+  //empty geojson featureCollection
+  var featureCollection = {
+    type: 'FeatureCollection',
+    features: []
+  }
+  
   var options = {
     route: req.params.route.toUpperCase(),
     apiKey: 'adf3b381-85b5-48b9-a049-32c335108f6e'
@@ -73,7 +74,8 @@ function makeFeature(vehicle) {
   feature.properties = {
     line: vehicle.MonitoredVehicleJourney.PublishedLineName,
     direction: vehicle.MonitoredVehicleJourney.DirectionRef,
-    timestamp: vehicle.RecordedAtTime
+    timestamp: vehicle.RecordedAtTime,
+    bearing: vehicle.MonitoredVehicleJourney.Bearing
   }
 
   return feature;
